@@ -2,7 +2,7 @@
 
 This repository contains a Battleship AI implementation built in TypeScript. The AI focuses on grid-based probability calculations, strategic ship placement, and targeted attack mechanisms to effectively play the game. This README explains the AI’s logic, approach, and benchmarks.
 
-![Benchmark Results](./benchmark.svg)
+![Benchmark Results](https://raw.githubusercontent.com/Envoy-VC/battleship-ai/refs/heads/main/benchmark.svg)
 
 ## Table of Contents
 
@@ -146,6 +146,6 @@ When the AI's chosen target is attacked, it checks the coordinates against the k
 
 - **Average Moves to Complete a Game**: 54.2
 
-  ![Benchmark Results](./benchmark.svg)
+  ![Benchmark Results](https://raw.githubusercontent.com/Envoy-VC/battleship-ai/refs/heads/main/benchmark.svg)
 
 These benchmarks can be tested by running simulations against another instance of Battleship AI with random ship placements, and running for `1000000` Games.

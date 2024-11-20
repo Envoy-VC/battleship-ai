@@ -5,12 +5,16 @@
 		"@commitlint/cli": "^19.5.0",
 		"@commitlint/config-conventional": "^19.5.0",
 		"husky": "^9.1.6",
-		"lerna": "^8.1.9"
+		"lerna": "^8.1.9",
+		"@changesets/cli": "^2.27.9"
 	},
 	"lint-staged": {
 		"*": "prettier -w --ignore-unknown"
 	},
 	"scripts": {
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"release": "pnpm build && changeset publish",
 		"commitlint": "commitlint --edit",
 		"prepare": "husky",
 		"build": "lerna run build",
