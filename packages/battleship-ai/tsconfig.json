@@ -1,0 +1,26 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"target": "ES2022",
+		"stripInternal": true,
+		"jsx": "react-jsx",
+		"lib": ["dom", "ES2019"],
+		"module": "ESNext",
+		"composite": false,
+		"declaration": true,
+		"declarationMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"inlineSources": false,
+		"isolatedModules": true,
+		"moduleResolution": "node",
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"preserveWatchOutput": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"types": ["@types/node"]
+	},
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["dist", "build", "node_modules"]
+}
