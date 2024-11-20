@@ -8,9 +8,8 @@
 	"types": "./dist/index.d.ts",
 	"files": [
 		"dist/**/*",
-		"CHANGELOG.md",
-		"../../README.md"
-	],
+		"CHANGELOG.md"
+ 	],
 	"scripts": {
 		"build": "tsup",
 		"build:watch": "tsup --watch",
