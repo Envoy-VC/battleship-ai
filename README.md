@@ -4,6 +4,10 @@ This repository contains a Battleship AI implementation built in TypeScript. The
 
 ![Benchmark Results](https://raw.githubusercontent.com/Envoy-VC/battleship-ai/refs/heads/main/benchmark.svg)
 
+![battleship-ai](https://github.com/user-attachments/assets/d9a58418-9eac-4565-a632-22b233e415fd)
+
+
+
 ## Table of Contents
 
 1. [Battleship AI](#battleship-ai)
