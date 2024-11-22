@@ -20,7 +20,8 @@
 		"prettier-check": "prettier --check \"./**/*.ts*\"",
 		"test": "pnpm test:node && pnpm test:edge",
 		"test:edge": "vitest --config vitest.edge.config.ts --run",
-		"test:node": "vitest --config vitest.node.config.ts --run"
+		"test:node": "vitest --config vitest.node.config.ts --run",
+		"benchmark": "bun ./benchmarks/suites/index.ts"
 	},
 	"exports": {
 		"./package.json": "./package.json",
@@ -31,7 +32,9 @@
 		}
 	},
 	"devDependencies": {
+		"@edge-runtime/vm": "^4.0.4",
 		"@types/node": "18",
+		"benny": "^3.7.1",
 		"chalk": "^5.3.0",
 		"inquirer": "^12.1.0",
 		"tsup": "^8.3.5",
@@ -43,7 +46,6 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"homepage": "https://sdk.vercel.ai/docs",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Envoy-VC/battleship-ai.git"

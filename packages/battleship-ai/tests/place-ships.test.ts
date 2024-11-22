@@ -1,8 +1,20 @@
 import { BattleShipAI } from '../src';
-import { drawBoard } from './utils';
+import { describe, it, beforeAll, expect } from 'vitest';
 
-const ai = new BattleShipAI(10, [5, 4, 3, 3, 2]);
+describe('Place Ships', () => {
+	let ai: BattleShipAI;
 
-const ships = ai.getRandomShipPlacements();
+	beforeAll(() => {
+		ai = new BattleShipAI(10, [5, 4, 3, 3, 2]);
+	});
 
-drawBoard(10, 3, 1, [], ships);
+	it('should randomly place ships', () => {
+		const ships = ai.getRandomShipPlacements();
+		expect(ships.length).toBe(5);
+		expect(ships.some((ship) => ship.positions.length === 5)).toBeTruthy();
+		expect(ships.some((ship) => ship.positions.length === 4)).toBeTruthy();
+		expect(ships.some((ship) => ship.positions.length === 3)).toBeTruthy();
+		expect(ships.some((ship) => ship.positions.length === 3)).toBeTruthy();
+		expect(ships.some((ship) => ship.positions.length === 2)).toBeTruthy();
+	});
+});

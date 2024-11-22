@@ -47,23 +47,27 @@ export class BattleShipAI {
 
 	// Initializes the probability grid
 	private initProbs(size: number): void {
-		for (let x = 0; x < size; x++) {
-			const row: number[] = [];
-			for (let y = 0; y < size; y++) {
-				row.push(0);
+		this.probGrid = Array.from({ length: size }, () =>
+			Array.from({ length: size }, () => 0)
+		);
+	}
+
+	private setProbs(value: number): void {
+		for (let x = 0; x < this.virtualGrid.size; x++) {
+			for (let y = 0; y < this.virtualGrid.size; y++) {
+				this.probGrid[x][y] = value;
 			}
-			this.probGrid.push(row);
 		}
 	}
 
 	private updateGrid(moves: AttackOutcome[]): void {
 		this.resetGrid();
 		moves.forEach((move) => {
-			if (move.outcome === 'hit') {
-				this.virtualGrid.updateCell(move.x, move.y, CellType.Hit);
-			} else {
-				this.virtualGrid.updateCell(move.x, move.y, CellType.Miss);
-			}
+			this.virtualGrid.updateCell(
+				move.x,
+				move.y,
+				move.outcome === 'hit' ? CellType.Hit : CellType.Miss
+			);
 		});
 	}
 
@@ -135,6 +139,12 @@ export class BattleShipAI {
 		// Adjust probabilities to avoid already attacked cells
 		for (const attack of previousAttacks) {
 			this.probGrid[attack.x]![attack.y] = 0; // Prevent re-targeting
+		}
+
+		// Adjust if all tiles are attacked
+		const hitTiles = previousAttacks.filter((a) => a.outcome === 'hit').length;
+		if (hitTiles === this.ships.reduce((a, b) => a + b, 0)) {
+			this.setProbs(0);
 		}
 	}
 
@@ -238,6 +248,10 @@ export class BattleShipAI {
 					maxProbs.push({ x, y });
 				}
 			}
+		}
+
+		if (maxProb === 0) {
+			return { x: -1, y: -1 }; // All cells are attacked
 		}
 
 		// Return a random choice among cells with the highest probability
