@@ -1,7 +1,7 @@
-import { AttackOutcome, BattleShipAI, Ship } from '../src';
-import { describe, it, beforeAll, expect } from 'vitest';
+import { beforeAll, describe, expect, it } from "vitest";
+import { type AttackOutcome, BattleShipAI, type Ship } from "../src";
 
-describe('Next Move', () => {
+describe("Next Move", () => {
 	let ai: BattleShipAI;
 	let ships: Ship[];
 
@@ -10,12 +10,12 @@ describe('Next Move', () => {
 		ships = ai.getRandomShipPlacements();
 	});
 
-	it('should get next move for no previous moves', () => {
+	it("should get next move for no previous moves", () => {
 		const move = ai.getHighestProbabilityTarget([]);
 		expect(move).toBeTruthy();
 	});
 
-	it('should get next move for low previous hits', () => {
+	it("should get next move for low previous hits", () => {
 		const noOfMoves = Math.floor(Math.random() * 10) + 5;
 		const previousMoves: AttackOutcome[] = [];
 		const map = new Map<string, boolean>();
@@ -26,7 +26,7 @@ describe('Next Move', () => {
 				const outcome = ships.some((ship) => {
 					return ship.positions.some((p) => p.x === x && p.y === y);
 				});
-				previousMoves.push({ x, y, outcome: outcome ? 'hit' : 'miss' });
+				previousMoves.push({ x, y, outcome: outcome ? "hit" : "miss" });
 				map.set(`${x},${y}`, true);
 			}
 		}
@@ -34,7 +34,7 @@ describe('Next Move', () => {
 		expect(move).toBeTruthy();
 	});
 
-	it('should get next move for high previous hits', () => {
+	it("should get next move for high previous hits", () => {
 		const noOfMoves = Math.floor(Math.random() * 10) + 20;
 		const previousMoves: AttackOutcome[] = [];
 		const map = new Map<string, boolean>();
@@ -45,7 +45,7 @@ describe('Next Move', () => {
 				const outcome = ships.some((ship) => {
 					return ship.positions.some((p) => p.x === x && p.y === y);
 				});
-				previousMoves.push({ x, y, outcome: outcome ? 'hit' : 'miss' });
+				previousMoves.push({ x, y, outcome: outcome ? "hit" : "miss" });
 				map.set(`${x},${y}`, true);
 			}
 		}
@@ -53,7 +53,7 @@ describe('Next Move', () => {
 		expect(move).toBeTruthy();
 	});
 
-	it('should not get next move for all hits', () => {
+	it("should not get next move for all hits", () => {
 		const previousMoves: AttackOutcome[] = [];
 
 		for (const ship of ships) {
@@ -61,7 +61,7 @@ describe('Next Move', () => {
 				previousMoves.push({
 					x: pos.x,
 					y: pos.y,
-					outcome: 'hit',
+					outcome: "hit",
 				});
 			}
 		}

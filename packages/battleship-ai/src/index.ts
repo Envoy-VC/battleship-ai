@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- safe */
-import { Grid } from './grid';
+import { Grid } from "./grid";
 import {
 	type AttackOutcome,
 	CellType,
-	type Ship,
 	type Coordinate,
-} from './types';
+	type Ship,
+} from "./types";
 
 export class BattleShipAI {
 	private probGrid: number[][];
@@ -48,7 +48,7 @@ export class BattleShipAI {
 	// Initializes the probability grid
 	private initProbs(size: number): void {
 		this.probGrid = Array.from({ length: size }, () =>
-			Array.from({ length: size }, () => 0)
+			Array.from({ length: size }, () => 0),
 		);
 	}
 
@@ -66,7 +66,7 @@ export class BattleShipAI {
 			this.virtualGrid.updateCell(
 				move.x,
 				move.y,
-				move.outcome === 'hit' ? CellType.Hit : CellType.Miss
+				move.outcome === "hit" ? CellType.Hit : CellType.Miss,
 			);
 		});
 	}
@@ -81,9 +81,7 @@ export class BattleShipAI {
 
 	// Resets the probability grid
 	private resetProbs(): void {
-		for (const row of this.probGrid) {
-			row.fill(0);
-		}
+		this.initProbs(this.virtualGrid.size);
 	}
 
 	private isValidCell(x: number, y: number): boolean {
@@ -96,11 +94,11 @@ export class BattleShipAI {
 		x: number,
 		y: number,
 		length: number,
-		direction: 'vertical' | 'horizontal'
+		direction: "vertical" | "horizontal",
 	): boolean {
 		for (let i = 0; i < length; i++) {
-			const nx = x + (direction === 'horizontal' ? i : 0);
-			const ny = y + (direction === 'vertical' ? i : 0);
+			const nx = x + (direction === "horizontal" ? i : 0);
+			const ny = y + (direction === "vertical" ? i : 0);
 
 			if (
 				!this.isValidCell(nx, ny) ||
@@ -119,8 +117,10 @@ export class BattleShipAI {
 
 		// Apply the AI opening patterns
 		for (const cell of BattleShipAI.OPENINGS) {
-			if (this.probGrid[cell.x]![cell.y]! !== 0) {
-				this.probGrid[cell.x]![cell.y]! += cell.weight;
+			if (cell.x < this.virtualGrid.size && cell.y < this.virtualGrid.size) {
+				if (this.probGrid[cell.x]![cell.y]! !== 0) {
+					this.probGrid[cell.x]![cell.y]! += cell.weight;
+				}
 			}
 		}
 
@@ -142,7 +142,7 @@ export class BattleShipAI {
 		}
 
 		// Adjust if all tiles are attacked
-		const hitTiles = previousAttacks.filter((a) => a.outcome === 'hit').length;
+		const hitTiles = previousAttacks.filter((a) => a.outcome === "hit").length;
 		if (hitTiles === this.ships.reduce((a, b) => a + b, 0)) {
 			this.setProbs(0);
 		}
@@ -184,12 +184,12 @@ export class BattleShipAI {
 		x: number,
 		y: number,
 		length: number,
-		direction: 'horizontal' | 'vertical'
+		direction: "horizontal" | "vertical",
 	): Coordinate[] {
 		const coords: Coordinate[] = [];
 
 		for (let i = 0; i < length; i++) {
-			if (direction === 'horizontal') {
+			if (direction === "horizontal") {
 				coords.push({ x: x + i, y });
 			} else {
 				coords.push({ x, y: y + i });
@@ -201,7 +201,7 @@ export class BattleShipAI {
 
 	private evaluateCellForShips(x: number, y: number): void {
 		for (const ship of this.ships) {
-			const directions = ['horizontal', 'vertical'] as const;
+			const directions = ["horizontal", "vertical"] as const;
 
 			for (const direction of directions) {
 				if (this.canPlaceShip(x, y, ship, direction)) {
@@ -264,10 +264,10 @@ export class BattleShipAI {
 
 	public getRandomShipPlacements(): Ship[] {
 		const ships: Ship[] = [];
-		const inner = Array<string>(this.virtualGrid.size).fill('empty');
+		const inner = Array<string>(this.virtualGrid.size).fill("empty");
 		const board: string[][] = Array.from(
 			{ length: this.virtualGrid.size },
-			() => [...inner]
+			() => [...inner],
 		);
 
 		// Function to check if the ship can be placed at the specified position
@@ -275,17 +275,17 @@ export class BattleShipAI {
 			x: number,
 			y: number,
 			size: number,
-			isHorizontal: boolean
+			isHorizontal: boolean,
 		): boolean => {
 			if (isHorizontal) {
 				if (x + size > this.virtualGrid.size) return false; // Ship exceeds board width
 				for (let i = 0; i < size; i++) {
-					if (board[y]![x + i]! !== 'empty') return false; // Cell is already occupied
+					if (board[y]![x + i]! !== "empty") return false; // Cell is already occupied
 				}
 			} else {
 				if (y + size > this.virtualGrid.size) return false; // Ship exceeds board height
 				for (let i = 0; i < size; i++) {
-					if (board[y + i]![x]! !== 'empty') return false; // Cell is already occupied
+					if (board[y + i]![x]! !== "empty") return false; // Cell is already occupied
 				}
 			}
 			return true;
@@ -293,9 +293,10 @@ export class BattleShipAI {
 
 		// Function to find all valid positions for a ship of given size and orientation
 		const findValidPositions = (
-			size: number
+			size: number,
 		): { x: number; y: number; isHorizontal: boolean }[] => {
-			const validPositions: { x: number; y: number; isHorizontal: boolean }[] = [];
+			const validPositions: { x: number; y: number; isHorizontal: boolean }[] =
+				[];
 			for (let x = 0; x < this.virtualGrid.size; x++) {
 				for (let y = 0; y < this.virtualGrid.size; y++) {
 					if (isValidPlacement(x, y, size, true)) {
@@ -327,10 +328,10 @@ export class BattleShipAI {
 			// Place the ship on the board
 			for (let i = 0; i < size; i++) {
 				if (isHorizontal) {
-					board[y]![x + i] = 'ship';
+					board[y]![x + i] = "ship";
 					ship.positions.push({ x: x + i, y });
 				} else {
-					board[y + i]![x] = 'ship';
+					board[y + i]![x] = "ship";
 					ship.positions.push({ x, y: y + i });
 				}
 			}
@@ -346,15 +347,15 @@ export class BattleShipAI {
 		return ships;
 	}
 
-	public calculateOutcome(x: number, y: number, ships: Ship[]): 'hit' | 'miss' {
+	public calculateOutcome(x: number, y: number, ships: Ship[]): "hit" | "miss" {
 		for (const ship of ships) {
 			for (const position of ship.positions) {
 				if (position.x === x && position.y === y) {
-					return 'hit';
+					return "hit";
 				}
 			}
 		}
-		return 'miss';
+		return "miss";
 	}
 }
 
@@ -364,4 +365,4 @@ function getRandom(min: number, max: number): number {
 }
 
 export { Grid };
-export * from './types';
+export * from "./types";
