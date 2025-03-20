@@ -1,5 +1,11 @@
 # battleship-ai
 
+## 0.0.2
+
+### Patch Changes
+
+- 6a32e79: apply opening magic moves to only bound tiles in virtual grid
+
 ## 0.0.1
 
 ### Patch Changes
